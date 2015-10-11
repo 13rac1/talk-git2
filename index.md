@@ -20,6 +20,16 @@ You must know the following commands and their use:
 * pull
 * clone
 
+# Non-ideal git
+
+Two users working on one branch.
+
+![](images/graphs/users-share-no-conflict.png)
+
+. . .
+
+*Just cross your fingers and hope you don't push at the same time*
+
 #Updating your fork
 
 Never make commits on existing branches

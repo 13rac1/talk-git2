@@ -1,0 +1,32 @@
+digraph git {
+  // Empty/commit: [shape=point, color=black, height=.2, width=.2]
+	splines=line
+	rankdir=LR
+	label="git - two users, one branch, no conflicts"
+	node [style=filled,color=white]
+
+	subgraph cluster_master {
+		label = "master"
+		style=filled
+		color=lightgrey
+
+		HEAD -> m1 -> m2
+		HEAD [shape=box, style=filled, color=white]
+	}
+	subgraph cluster_0 {
+		label="user1"
+		style=filled
+		color=lightgrey
+
+		HEAD -> u1
+		u1 -> m1
+	}
+	subgraph cluster_1 {
+		label="user2"
+		style=filled
+		color=lightgrey
+
+		m1 -> u2
+		u2 -> m2
+	}
+}
