@@ -1,31 +1,36 @@
 digraph git {
-	splines=line
 	rankdir=LR
-	label="git - two users, one branch, no conflicts"
-	node [style=filled,color=white]
+	label="two users, one branch, no conflicts"
+	node [style=filled, color=deepskyblue4, fillcolor=deepskyblue2]
 
 	subgraph cluster_master {
 		label = "master"
 		style=filled
 		color=lightgrey
 
-		HEAD -> m1 -> m2
-		HEAD [shape=box, style=filled, color=white]
+		m0 -> m1 -> m2 -> m3 -> m4
+		m0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
+		m1 [shape=point, color=black, fillcolor=black, height=.2, width=.2]
+		m2 [label="8d38e"]
+		m3 [shape=point, color=black, fillcolor=black, height=.2, width=.2]
+		m4 [label="d42ce"]
 	}
 	subgraph cluster_0 {
-		label="user1"
+		label="User A"
 		style=filled
 		color=lightgrey
 
-		HEAD -> u1
-		u1 -> m1
+		m0 -> a0 -> a1 -> m2
+		a0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
+		a1 [label="8d38e"]
 	}
 	subgraph cluster_1 {
-		label="user2"
+		label="User B"
 		style=filled
 		color=lightgrey
 
-		m1 -> u2
-		u2 -> m2
+		m2 -> b0 -> b1 -> m4
+		b0 [label="8d38e"]
+		b1 [label="d42ce"]
 	}
 }
