@@ -1,0 +1,41 @@
+digraph git {
+	rankdir=LR
+	label="two users, one branch, with conflicts"
+	node [style=filled]
+
+	subgraph cluster_master {
+		label = "master"
+		style=filled
+		color=lightgrey
+
+		m0 -> m1 -> m2 -> m3 -> m4
+    m0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
+    m1 [shape=point, height=.2, width=.2]
+    m2 [label="8d38e", color=deepskyblue4, fillcolor=deepskyblue2]
+		m3 [label="d42ce", color=goldenrod4, fillcolor=goldenrod2]
+		m4 [label="merge\n2d137", color=brown4, fillcolor=brown2]
+	}
+	subgraph cluster_0 {
+		label="User A"
+		style=filled
+		color=lightgrey
+
+    a0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
+    a1 [label="8d38e", color=deepskyblue4, fillcolor=deepskyblue2]
+    m0 -> a0 -> a1 -> m2
+
+	}
+	subgraph cluster_1 {
+		label="User B"
+		style=filled
+		color=lightgrey
+    b0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
+    b1 [label="d42ce", color=goldenrod4, fillcolor=goldenrod2]
+    b2 [label="8d38e", color=deepskyblue4, fillcolor=deepskyblue2]
+		b3 [label="merge\n2d137", color=brown4, fillcolor=brown2]
+
+    m0 -> b0 -> b1 -> b2 -> b3 -> m4
+		m2 -> b2 [style=dashed]
+		m2 -> b3 [style=dashed]
+	}
+}

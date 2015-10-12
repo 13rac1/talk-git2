@@ -1,5 +1,4 @@
 digraph git {
-  // Empty/commit: [shape=point, color=black, height=.2, width=.2]
 	splines=line
 	rankdir=LR
 	label="git - two users, one branch, no conflicts"
