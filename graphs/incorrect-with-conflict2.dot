@@ -1,6 +1,6 @@
 digraph git {
 	rankdir=LR
-	label="two users, one branch, with conflicts"
+	label="two users, one branch creating a merge commit"
 	node [style=filled]
 
 	subgraph cluster_master {
@@ -16,7 +16,7 @@ digraph git {
 		m4 [label="merge\n2d137", color=brown4, fillcolor=brown2]
 	}
 	subgraph cluster_0 {
-		label="User A"
+		label="User A - master"
 		style=filled
 		color=lightgrey
 
@@ -26,7 +26,7 @@ digraph git {
 
 	}
 	subgraph cluster_1 {
-		label="User B"
+		label="User B - master"
 		style=filled
 		color=lightgrey
 		b0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]

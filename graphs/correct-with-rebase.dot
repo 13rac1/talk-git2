@@ -1,0 +1,52 @@
+digraph git {
+	rankdir=LR
+	label="two users, three branches, no conflicts"
+	node [style=filled]
+
+	subgraph cluster_master {
+		label = "master"
+		style=filled
+		color=lightgrey
+
+		m0 -> m1 -> m2 -> m3 -> m4
+		m0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2, pin=true]
+		// Empty items for alignment
+		m1, m3 [shape=point, height=.2, width=.2]
+		m2 [label="8d38e", color=deepskyblue4, fillcolor=deepskyblue2]
+		m4 [label="d42ce", color=goldenrod4, fillcolor=goldenrod2]
+	}
+	subgraph cluster_0 {
+		label="User A - FeatureA"
+		style=filled
+		color=lightgrey
+
+		a0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
+		a1 [label="8d38e", color=deepskyblue4, fillcolor=deepskyblue2]
+		m0 -> a0 -> a1 -> m2
+
+	}
+	subgraph cluster_1 {
+		label="User B - FeatureB"
+		style=filled
+		color=lightgrey
+		b0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
+		b1 [label="d42ce", color=goldenrod4, fillcolor=goldenrod2]
+		b2 [label="?", shape=none, fontsize=20]
+
+		b0 -> b1 -> b2
+		m0 -> b0
+	}
+	subgraph cluster_2 {
+		label="User B - FeatureB rebased"
+		style=filled
+		color=lightgrey
+		c0 [shape=none, label="", height=.1, width=.1]
+		c1 [label="8d38e", color=deepskyblue4, fillcolor=deepskyblue2]
+		c2 [label="d42ce", color=goldenrod4, fillcolor=goldenrod2]
+
+		c0 -> c1 [style=invis]
+		c1 -> c2 -> m4
+		m2 -> c1
+		b2 -> c0
+	}
+}

@@ -14,7 +14,7 @@ digraph git {
 		m2 [label="8d38e", color=deepskyblue4, fillcolor=deepskyblue2]
 	}
 	subgraph cluster_0 {
-		label="User A"
+		label="User A - master"
 		style=filled
 		color=lightgrey
 
@@ -24,12 +24,12 @@ digraph git {
 
 	}
 	subgraph cluster_1 {
-		label="User B"
+		label="User B - master"
 		style=filled
 		color=lightgrey
 		b0 [label="1da17", color=chartreuse4, fillcolor=chartreuse2]
 		b1 [label="d42ce", color=goldenrod4, fillcolor=goldenrod2]
-		b2 [label="?", shape=none, fontsize=30]
+		b2 [label="?", shape=none, fontsize=20]
 
 		m0 -> b0 -> b1 -> b2
 	}
