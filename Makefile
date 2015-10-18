@@ -4,7 +4,7 @@ GRAPHDIR := graphs
 GRAPHFILES := $(shell find $(GRAPHDIR) -type f -name "*.dot")
 IMAGEFILES := $(patsubst graphs/%.dot, images/graphs/%.png, $(GRAPHFILES))
 
-.PHONY: clean
+.PHONY: clean publish
 
 all: reveal.js/index.html images/graphs index.html $(IMAGEFILES)
 
@@ -30,6 +30,20 @@ reveal.js/index.html:
 	tar zxf 3.1.0.tar.gz
 	mv reveal.js-3.1.0 reveal.js
 	rm 3.1.0.tar.gz
+
+# Force update the gh-pages branch with the current output.
+# WARNING: Calls "make all"
+publish:
+	git checkout master
+	git branch -D gh-pages
+	git checkout -b gh-pages
+	make all
+	git rm .gitignore
+	git add .
+	git commit -m "Publish"
+	git push origin gh-pages -f
+	git checkout master
+	make all
 
 clean:
 	rm index.html $(IMAGEFILES)
