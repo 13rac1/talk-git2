@@ -1,5 +1,8 @@
 digraph git {
 	rankdir=LR
+	graph [fontname="helvetica, sans"];
+	node [fontname="helvetica, sans"];
+	edge [fontname="helvetica, sans"];
 	label="two users, one branch, with conflicts"
 	node [style=filled]
 
