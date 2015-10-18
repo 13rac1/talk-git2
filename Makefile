@@ -6,7 +6,7 @@ IMAGEFILES := $(patsubst graphs/%.dot, images/graphs/%.png, $(GRAPHFILES))
 
 .PHONY: clean
 
-all: images/graphs index.html $(IMAGEFILES)
+all: reveal.js/index.html images/graphs index.html $(IMAGEFILES)
 
 # Make output directory
 images/graphs:
@@ -23,6 +23,13 @@ index.html: index.md
 #dot graphs/example.dot -Tpng -o images/example.png
 images/graphs/%.png: graphs/%.dot
 	dot $< -Tpng -o $@
+
+# RevealJS setup
+reveal.js/index.html:
+	wget https://github.com/hakimel/reveal.js/archive/3.1.0.tar.gz
+	tar zxf 3.1.0.tar.gz
+	mv reveal.js-3.1.0 reveal.js
+	rm 3.1.0.tar.gz
 
 clean:
 	rm index.html $(IMAGEFILES)
