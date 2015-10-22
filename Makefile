@@ -18,6 +18,7 @@ index.html: index.md
 	pandoc -t revealjs --template=pandoc-templates/default.revealjs \
 	--standalone --section-divs --variable theme="league" \
 	--variable transition="convex" --incremental \
+	--no-highlight --variable hlss=zenburn \
 	index.md -o index.html
 
 #dot graphs/example.dot -Tpng -o images/example.png
