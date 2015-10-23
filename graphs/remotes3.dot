@@ -1,0 +1,44 @@
+digraph git {
+  rankdir=LR
+	graph [fontname="helvetica, sans"];
+	node [fontname="helvetica, sans", shape=square, color=darkolivegreen4, fillcolor=darkolivegreen2, style=filled];
+	edge [fontname="helvetica, sans"];
+	label="Four repos: two remote and two local users"
+
+	subgraph cluster_rh {
+		label = "repository server"
+		style=filled
+		color=grey50
+		fillcolor=grey80
+
+    {
+      rank=same
+      r0 [label="user1/master"]
+      r1 [label="user2/master"]
+    }
+  }
+
+	subgraph cluster_local1 {
+		label = "user1 local"
+		style=filled
+		color=grey50
+		fillcolor=grey80
+
+		r2 [label="master"]
+  }
+  r0 -> r2 [dir=both]
+
+	subgraph cluster_local2 {
+		label = "user2 local"
+		style=filled
+		color=grey50
+		fillcolor=grey80
+
+		r3 [label="master"]
+	}
+  r3 -> r1
+
+  r0 -> r3
+  r1 -> r0
+
+}
