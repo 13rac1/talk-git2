@@ -12,6 +12,7 @@ Brad Erickson (eosrei) & Mark Ferree (mrf)
 You must know the following Git commands and their usage:
 
 * clone
+* checkout
 * add
 * commit
 * push
@@ -25,9 +26,7 @@ You must know the following Git commands and their usage:
 * tag
 * branch
 
-#Why is Git better than your VCS?
-
-Many users rarely use git as anything more than a distributed SVN.
+#Why is Git better than other VCSs?
 
 Benefits to Git:
 
@@ -36,6 +35,143 @@ Benefits to Git:
     * Contribute from anywhere even without Internet
 * Faster than SVN & CVS
 * Integrated with all the tools
+
+----------
+
+##Useful commands: Tagging commits
+
+Like most VCSs, Git has the ability to tag specific points in history as being important.
+
+Tags are generally used to denote a version release of the codebase or repository.
+
+```bash
+user@server ~/development/project $ git tag
+user@server ~/development/project $ git tag v1.0
+user@server ~/development/project $ git tag
+v1.0
+user@server ~/development/project $ git show v1.0
+commit 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2
+Author: Example <user@example.com>
+Date:   Tue Jan 19 03:14:08 2038 0000
+    Initial git repository build.
+```
+
+Think of tags as “Commit Names”
+
+##Useful commands: Comparing differences
+
+git diff shows the differences between commits, the stage, or your current working directory.
+
+Often used to see what’s been changed since the last commit.
+```diff
+diff --git a/daemon.go b/daemon.go
+index d3d57ae..f1ef55c 100644
+--- a/daemon.go
++++ b/daemon.go
+@@ -179,12 +180,19 @@ func (cli *DaemonCli) CmdDaemon(args ...string) error {
+
+  logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: timeutils.RFC3339NanoFixed})
+
++  if len(cli.LogConfig.Config) > 0 {
++    if err := logger.ValidateLogOpts(cli.LogConfig.Type, cli.LogConfig.Config); err != nil {
++      logrus.Fatalf("Failed to set log opts: %v", err)
++    }
++  }
++
+  var pfile *pidfile.PIDFile
+  if cli.Pidfile != "" {
+    pf, err := pidfile.New(cli.Pidfile)
+    if err != nil {
+      logrus.Fatalf("Error starting daemon: %v", err)
+    }
+```
+
+##Useful commands: Viewing the commit history
+```bash
+git log -p
+```
+```bash
+commit a1f3028a87741bc5218373bc9af8a8aaa562b87e (HEAD, origin/master, origin/HEAD, master)
+Author: Brad Erickson <user@example.com>
+Date:   Thu Oct 22 15:34:34 2015 -0700
+
+    Add custom.css and adjust Makefile to include
+
+diff --git a/Makefile b/Makefile
+index e902fc1..76f5a99 100644
+--- a/Makefile
++++ b/Makefile
+@@ -19,6 +19,7 @@ index.html: index.md
+        --no-highlight --variable hlss=zenburn \
++       --css=css/custom.css \
+        index.md -o index.html
+```
+
+```bash
+git log --oneline
+```
+```bash
+0c869ad Adjust pandoc template and Makefile to use highlightjs
+0e92680 Add 'make publish' to update the rendered Github pages branch
+413d635 Move revealjs download into Makefile
+31f2cb0 Updating index.md with current gdocs
+```
+
+```bash
+git whatchanged
+```
+```bash
+commit a1f3028a87741bc5218373bc9af8a8aaa562b87e (HEAD, origin/master, origin/HEAD, master)
+Author: Brad Erickson <user@example.com>
+Date:   Thu Oct 22 15:34:34 2015 -0700
+
+    Add custom.css and adjust Makefile to include
+
+:100644 100644 e902fc1... 76f5a99... M  Makefile
+:000000 100644 0000000... 5de960e... A  css/custom.css
+```
+
+##Useful commands: Undoing that last commit
+http://stackoverflow.com/questions/927358/how-do-you-undo-the-last-commit
+
+
+##Useful commands: Git Blame
+
+Shows who wrote (or at least last edited) each line.
+
+```bash
+git blame filename.txt
+```
+```bash
+accd5f0c (Dries Buytaert      2001-03-10 11:07:52 +0000  1) <?php
+^008612a (Dries Buytaert      2000-05-18 19:51:59 +0000  2)
+94e30bf7 (Dries Buytaert      2004-08-21 06:42:38 +0000  3) /**
+94e30bf7 (Dries Buytaert      2004-08-21 06:42:38 +0000  4)  * @file
+94e30bf7 (Dries Buytaert      2004-08-21 06:42:38 +0000  5)  * The PHP page that serves all page requests on a Drupal installation.
+94e30bf7 (Dries Buytaert      2004-08-21 06:42:38 +0000  6)  *
+362cade1 (Dries Buytaert      2007-12-26 08:46:48 +0000  7)  * All Drupal code is released under the GNU General Public License.
+f434037c (Nathan Haug         2011-10-30 21:05:57 -0700  8)  * See COPYRIGHT.txt and LICENSE.txt files in the "core" directory.
+94e30bf7 (Dries Buytaert      2004-08-21 06:42:38 +0000  9)  */
+94e30bf7 (Dries Buytaert      2004-08-21 06:42:38 +0000 10)
+5e58da00 (Nathaniel Catchpole 2014-06-26 11:47:01 +0100 11) use Drupal\Core\DrupalKernel;
+5e58da00 (Nathaniel Catchpole 2014-06-26 11:47:01 +0100 12) use Symfony\Component\HttpFoundation\Request;
+8a567823 (Alex Pott           2014-04-25 20:13:44 +0100 13)
+95fe74d5 (catch               2015-03-11 08:31:22 +0000 14) $autoloader = require_once 'autoload.php';
+5e58da00 (Nathaniel Catchpole 2014-06-26 11:47:01 +0100 15)
+90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 16) $kernel = new DrupalKernel('prod', $autoloader);
+1251cc35 (webchick            2014-06-18 00:07:06 -0700 17)
+90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 18) $request = Request::createFromGlobals();
+90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 19) $response = $kernel->handle($request);
+90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 20) $response->send();
+90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 21)
+90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 22) $kernel->terminate($request, $response);
+```
+
+##Useful commands: Git Stash
+
+Stores your current changes removing them from working directory.
+
+Can pull back in stashes, and each stash is stored for later recall.
 
 ----------
 
@@ -76,7 +212,7 @@ user@server $ git push
 
 * Creates an extra git merge commit
 * Risk of merge conflicts
-* A messy git history <- harder to track down problems
+* A messy git history = harder to track down problems
 
 ----------
 
@@ -96,68 +232,46 @@ Master is preserved for hotfixes
 
 Two users work in their own branches, the second branch is rebased, then merged to master when features are complete.
 
-*This is the Github/Bitbucket//etc workflow now and is coming to Drupal.org.*
-
 ![](images/graphs/correct-with-rebase.png)
+
+*This is the Github/Bitbucket/etc Pull Request workflow.*
+
+*It is coming soon to Drupal.org.*
 
 #Creating branches
 
-SHOW EXAMPLE
+Git branches allow you to separate work on a project into discrete groups of commits.
+
+Ideally name branches descriptively, such as:
+
+*issue#-short_description*
 
 ```bash
-git checkout -b new-branch
-git branch
+user@server ~/development/project $ git branch #List local branches
+* master
+user@server ~/development/project $ git checkout -b 1-readme-details #Create a new branch
+Switched to a new branch '1-readme-details'
+user@server ~/development/project $ git branch #List local branches
+  master
+* 1-readme-details
 ```
 
 #Deleting branches
 
-SHOW EXAMPLE
-
+Branches can be used for new features, temporary tests or quick backups.
 ```bash
-git branch -d new-branch
-git branch -D new-branch
+user@server ~/development/project $ git commit -am "Updating readme"
+[1-readme-details 5849d9b] Updating readme
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+user@server ~/development/project $ git checkout master
+Switched to branch 'master'
+user@server ~/development/project $ git branch -d 1-readme-details
+error: The branch '1-readme-details' is not fully merged.
+If you are sure you want to delete it, run 'git branch -D 1-readme-details'.
+user@server ~/development/project $ git branch -D 1-readme-details
+Deleted branch 1-readme-details (was 5849d9b).
 ```
-
-# Useful commands
-
-##Tagging commits
-
-NEEDS EXPLANATION
-
-git tag
-
-GRAPH HERE REPRESENTING TAGS USEFULNESS
-
-##Comparing differences
-
-git diff shows the differences between commits, the stage, or your current working directory.
-```bash
-git diff
-```
-SHOW OUTPUT
-
-##Git log
-```bash
-git log -p
-```
-SHOW OUTPUT
-```bash
-git log --oneline
-```
-SHOW OUTPUT
-```bash
-git whatchanged
-```
-SHOW OUTPUT
-
-##Git Blame
-
-Shows who wrote (or at least last edited) each line.
-
-```bash
-git blame filename.txt
-```
-SHOW OUTPUT
+Delete local and remote branches when you are done with them.
 
 #Merging branches
 
@@ -173,37 +287,58 @@ Conflicts occur when two commits change the same line of code.
 #Simple merge conflict example
 TODO
 
-#Complex merge conflict example
-TODO
-
-#Messy merge conflict
-TODO EXAMPLE
-
 #Feature branch workflows
 Summary of how all of the above commands work together
 
-#Multiple remotes and personal forks
-git config -l
+----------
 
-#Updating your local fork
-Never make commits on existing branches
+##Remotes and forks: Origin Remote
+The source repository is called your *origin* remote.
+
 ```bash
-git remote
-git remote add upstream git@github.com:user/project.git
-git remote update --prune
-git checkout master
-git pull upstream master
-git push # aka git push origin master
+user@server ~/development/project $ git clone https://github.com/torvalds/linux.git
+user@server ~/development/project $ git remote
+origin
 ```
-Now make your new feature branch or rebase your existing branches
+
+```bash
+user@server ~/development/project $ git status
+On branch master
+Your branch is up-to-date with 'origin/master'.
+```
+
+![](images/graphs/remotes1.png)
+
+##Remotes and forks: Two users, one remote
+
+![](images/graphs/remotes2.png)
+
+Two users can use the same repository as their origin remote.
+
+##Remotes and forks: Two users, two remotes.
+
+User2 forks a project repository to create their project fork.
+
+![](images/graphs/remotes3.png)
+
+##Remotes and forks: Origin and Upstream
+
+![](images/graphs/remotes4.png)
+
+* Pull changes from *upstream* into *local/master*
+* Pushes changes to *origin*
+* Merges to *upstream* or creates a Pull Request.
+
 
 #Pull requests
 
 A pull request is a request to pull your changes.
 
-Not a feature of Git, but of UI tools such as Github, Bitbucket, or soon Drupal.org.
+Not a feature of Git, but of UI tools such as Github, Bitbucket, and soon Drupal.org.
 
 Create a pull request when you have new commits for a project in a fork and/or branch which should be pulled into the original project.
+
+*”I’ve made some changes! Will you accept them?”*
 
 # git rebase
 
@@ -219,11 +354,20 @@ TODO EXAMPLE
 ##Editing commits with rebase -i
 TODO EXAMPLE
 
-#git stash
+#Update your fork
 
-Stores your current changes.
+You’ve got a
 
-Can pull back in stashes, and each stash is stored for later recall.
+Never make commits on existing branches
+```bash
+git remote
+git remote add upstream git@github.com:user/project.git
+git remote update --prune
+git checkout master
+git pull upstream master
+git push # aka git push origin master
+```
+Now make your new feature branch or rebase your existing branches
 
 #Rewriting local history
 ##git commit --amend
@@ -239,6 +383,7 @@ Never to be used on a master branch
 ```bash
 git commit -m “css fix”
 ```
+Not descriptive or useful.
 
 ##Yes, this.
 
@@ -258,19 +403,19 @@ Reference: https://wiki.gnome.org/Git/CommitMessages
 
 #Summary
 
+New git commands: tag, diff, log, whatchanged, blame, remote, stash, rebase
+
+Plus: Pull Requests and Useful commit messages
+
 #Further Study
 
-* history rewriting for removing passwords and extraneous binary files.
-* repository hooks
-* Pull Requests are coming to Drupal.org: https://www.youtube.com/watch?v=37zyV2mqDjU
-* https://www.atlassian.com/git/tutorials/setting-up-a-repository
+> * history rewriting for removing passwords and extraneous binary files.
+> * repository hooks
+> * Pull Requests are coming to Drupal.org: https://www.youtube.com/watch?v=37zyV2mqDjU
+> * https://www.atlassian.com/git/tutorials/setting-up-a-repository
 
 #EOF
 
-Brad Erickson
-eosrei.net
-github.com/eosrei
+**Brad Erickson**  - eosrei.net - github.com/eosrei
 
-Mark Ferree
-chapterthree.com
-github.com/mrf
+**Mark Ferree** - chapterthree.com - github.com/mrf
