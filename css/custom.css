@@ -3,3 +3,8 @@
 
 .reveal h2 {
   font-size: 1.99em; }
+
+.reveal pre {
+  width: 100%;
+  font-size: .44em;
+}
