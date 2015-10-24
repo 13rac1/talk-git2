@@ -1,4 +1,5 @@
 #git, the next level
+http://eosrei.github.io/talk-git2
 
 #About Us
 Brad Erickson (eosrei) & Mark Ferree (mrf)
@@ -422,9 +423,9 @@ Create a pull request when you have new commits for a project in a fork and/or b
 
 *”I’ve made some changes! Will you accept them?”*
 
-# Rebasing
+----------
 
-##Intro
+##Rebase
 A merge creates a single commit with two parents, this creates a non-linear history.
 
 A rebase “replays” the commits from the current branch onto another, leaving a linear history.
@@ -576,13 +577,9 @@ d714f67 Readme details
 user@server ~/development/project $ git rebase -i 286e2e4
 Stopped at 859d12bdcfc54fafcb5fbca3bb9ab0da57f4c92a... New feature
 You can amend the commit now, with
-
     git commit --amend
-
 Once you are satisfied with your changes, run
-
     git rebase --continue
-
 user@server ~/development/project $ git commit --amend
 [detached HEAD 0a9c2fe] New feature, more details to message
  1 file changed, 4 insertions(+)
