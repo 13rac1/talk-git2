@@ -69,9 +69,9 @@ index d3d57ae..f1ef55c 100644
 --- a/daemon.go
 +++ b/daemon.go
 @@ -179,12 +180,19 @@ func (cli *DaemonCli) CmdDaemon(args ...string) error {
-
+ 
   logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: timeutils.RFC3339NanoFixed})
-
+ 
 +  if len(cli.LogConfig.Config) > 0 {
 +    if err := logger.ValidateLogOpts(cli.LogConfig.Type, cli.LogConfig.Config); err != nil {
 +      logrus.Fatalf("Failed to set log opts: %v", err)
@@ -88,9 +88,11 @@ index d3d57ae..f1ef55c 100644
 
 ##Useful commands: Viewing the commit history
 ```bash
-git log -p
+user@server $ git log -p
 ```
-```bash
+----------
+
+```diff
 commit a1f3028a87741bc5218373bc9af8a8aaa562b87e (HEAD, origin/master, origin/HEAD, master)
 Author: Brad Erickson <user@example.com>
 Date:   Thu Oct 22 15:34:34 2015 -0700
@@ -106,20 +108,26 @@ index e902fc1..76f5a99 100644
 +       --css=css/custom.css \
         index.md -o index.html
 ```
+----------
 
 ```bash
-git log --oneline
+user@server $ git log --oneline
 ```
+----------
+
 ```bash
 0c869ad Adjust pandoc template and Makefile to use highlightjs
 0e92680 Add 'make publish' to update the rendered Github pages branch
 413d635 Move revealjs download into Makefile
 31f2cb0 Updating index.md with current gdocs
 ```
+----------
 
 ```bash
-git whatchanged
+user@server $ git whatchanged
 ```
+----------
+
 ```bash
 commit a1f3028a87741bc5218373bc9af8a8aaa562b87e (HEAD, origin/master, origin/HEAD, master)
 Author: Brad Erickson <user@example.com>
@@ -130,6 +138,7 @@ Date:   Thu Oct 22 15:34:34 2015 -0700
 :100644 100644 e902fc1... 76f5a99... M  Makefile
 :000000 100644 0000000... 5de960e... A  css/custom.css
 ```
+----------
 
 ##Useful commands: Undoing that last commit
 http://stackoverflow.com/questions/927358/how-do-you-undo-the-last-commit
@@ -140,7 +149,7 @@ http://stackoverflow.com/questions/927358/how-do-you-undo-the-last-commit
 Shows who wrote (or at least last edited) each line.
 
 ```bash
-git blame filename.txt
+user@server $ git blame filename.txt
 ```
 ```bash
 accd5f0c (Dries Buytaert      2001-03-10 11:07:52 +0000  1) <?php
@@ -163,8 +172,7 @@ f434037c (Nathan Haug         2011-10-30 21:05:57 -0700  8)  * See COPYRIGHT.txt
 90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 18) $request = Request::createFromGlobals();
 90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 19) $response = $kernel->handle($request);
 90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 20) $response->send();
-90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 21)
-90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 22) $kernel->terminate($request, $response);
+
 ```
 
 ##Useful commands: Git Stash
@@ -172,6 +180,21 @@ f434037c (Nathan Haug         2011-10-30 21:05:57 -0700  8)  * See COPYRIGHT.txt
 Stores your current changes removing them from working directory.
 
 Can pull back in stashes, and each stash is stored for later recall.
+
+```bash
+user@server $ git stash
+```
+
+```bash
+user@server $ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+```
+
+```bash
+user@server $ git stash apply
+```
 
 ----------
 
@@ -282,10 +305,42 @@ git merge develop
 ```
 #Resolving merge conflicts
 
-Conflicts occur when two commits change the same line of code.
+```bash
+[username]$ git merge macos
+Updating c1f5cc2..fc56b58
+Fast-forward
+ src/ProjectLauncher/LaunchForm.cs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+[username]$ git merge linux
+Auto-merging src/ProjectLauncher/LaunchForm.cs
+CONFLICT (content): Merge conflict in src/ProjectLauncher/LaunchForm.cs
+Automatic merge failed; fix conflicts and then commit the result.
+```
 
-#Simple merge conflict example
-TODO
+```bash
+[username]$ git status
+On branch master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+
+        both modified:   LaunchForm.cs
+```
+
+```bash
+using System.Drawing;
+using System.Text;
+<<<<<<< HEAD
+using System.Macos.Forms;
+=======
+using System.Linux.Forms;
+>>>>>>> linux
+
+using EnvDTE;
+```
+
 
 #Feature branch workflows
 Summary of how all of the above commands work together
@@ -342,21 +397,17 @@ Create a pull request when you have new commits for a project in a fork and/or b
 
 # git rebase
 
-##Explanation
-
 A merge creates a single commit with two parents, leaving a non-linear history, a rebase replays the commits from the current branch onto another, leaving a linear history.
 
 The “base” commit on the branch is changed hence “rebase.”
 
 ##Squashing commits with rebase -i
-TODO EXAMPLE
+
 
 ##Editing commits with rebase -i
-TODO EXAMPLE
+
 
 #Update your fork
-
-You’ve got a
 
 Never make commits on existing branches
 ```bash
@@ -383,7 +434,7 @@ Never to be used on a master branch
 ```bash
 git commit -m “css fix”
 ```
-Not descriptive or useful.
+It is not descriptive or useful.
 
 ##Yes, this.
 
@@ -405,14 +456,14 @@ Reference: https://wiki.gnome.org/Git/CommitMessages
 
 New git commands: tag, diff, log, whatchanged, blame, remote, stash, rebase
 
-Plus: Pull Requests and Useful commit messages
+Plus: Pull Requests, Useful commit messages
 
 #Further Study
 
-> * history rewriting for removing passwords and extraneous binary files.
-> * repository hooks
-> * Pull Requests are coming to Drupal.org: https://www.youtube.com/watch?v=37zyV2mqDjU
-> * https://www.atlassian.com/git/tutorials/setting-up-a-repository
+* history rewriting for removing passwords and extraneous binary files.
+* repository hooks
+* Pull Requests are coming to Drupal.org: https://www.youtube.com/watch?v=37zyV2mqDjU
+* https://www.atlassian.com/git/tutorials/setting-up-a-repository
 
 #EOF
 
