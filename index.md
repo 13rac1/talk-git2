@@ -1,6 +1,6 @@
 #git, the next level
 
-##About Us
+#About Us
 Brad Erickson (eosrei) & Mark Ferree (mrf)
 
 #Prerequisites
@@ -90,7 +90,6 @@ index d3d57ae..f1ef55c 100644
 ```bash
 user@server $ git log -p
 ```
-----------
 
 ```diff
 commit a1f3028a87741bc5218373bc9af8a8aaa562b87e (HEAD, origin/master, origin/HEAD, master)
@@ -113,7 +112,6 @@ index e902fc1..76f5a99 100644
 ```bash
 user@server $ git log --oneline
 ```
-----------
 
 ```bash
 0c869ad Adjust pandoc template and Makefile to use highlightjs
@@ -126,7 +124,6 @@ user@server $ git log --oneline
 ```bash
 user@server $ git whatchanged
 ```
-----------
 
 ```bash
 commit a1f3028a87741bc5218373bc9af8a8aaa562b87e (HEAD, origin/master, origin/HEAD, master)
@@ -139,10 +136,6 @@ Date:   Thu Oct 22 15:34:34 2015 -0700
 :000000 100644 0000000... 5de960e... A  css/custom.css
 ```
 ----------
-
-##Useful commands: Undoing that last commit
-http://stackoverflow.com/questions/927358/how-do-you-undo-the-last-commit
-
 
 ##Useful commands: Git Blame
 
@@ -306,19 +299,23 @@ git merge develop
 #Resolving merge conflicts
 
 ```bash
-[username]$ git merge macos
+user@server git merge macos
 Updating c1f5cc2..fc56b58
 Fast-forward
  src/ProjectLauncher/LaunchForm.cs | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
-[username]$ git merge linux
+```
+
+```bash
+user@server git merge linux
 Auto-merging src/ProjectLauncher/LaunchForm.cs
 CONFLICT (content): Merge conflict in src/ProjectLauncher/LaunchForm.cs
 Automatic merge failed; fix conflicts and then commit the result.
 ```
+--------------
 
 ```bash
-[username]$ git status
+user@server git status
 On branch master
 You have unmerged paths.
   (fix conflicts and run "git commit")
