@@ -86,7 +86,7 @@ index d3d57ae..f1ef55c 100644
     }
 ```
 
-##Useful commands: Viewing the commit history
+##Useful commands: Viewing changes in commit history
 ```bash
 user@server $ git log -p
 ```
@@ -107,7 +107,7 @@ index e902fc1..76f5a99 100644
 +       --css=css/custom.css \
         index.md -o index.html
 ```
-----------
+## Useful commands: Shorter history
 
 ```bash
 user@server $ git log --oneline
@@ -119,7 +119,7 @@ user@server $ git log --oneline
 413d635 Move revealjs download into Makefile
 31f2cb0 Updating index.md with current gdocs
 ```
-----------
+##Useful commands: Whatchanged
 
 ```bash
 user@server $ git whatchanged
@@ -135,7 +135,6 @@ Date:   Thu Oct 22 15:34:34 2015 -0700
 :100644 100644 e902fc1... 76f5a99... M  Makefile
 :000000 100644 0000000... 5de960e... A  css/custom.css
 ```
-----------
 
 ##Useful commands: Git Blame
 
@@ -188,6 +187,22 @@ stash@{2}: WIP on master: 21d80a5 added number to log
 ```bash
 user@server $ git stash apply
 ```
+
+
+##Useful commands: Amend
+```bash
+git commit --amend
+```
+Making minor updates to an existing commit
+NEVER to be used on a master branch
+
+##Useful commands: Force push 
+```bash
+git push --force
+```
+ONLY USE ON YOUR OWN FEATURE BRANCHES
+
+Assumes your local is correct in all cases and overwrites accordingly.
 
 ----------
 
@@ -296,7 +311,8 @@ A merge creates a new commit that incorporates changes from other commits. The t
 git checkout master
 git merge develop
 ```
-#Resolving merge conflicts
+
+#Creating merge conflicts
 
 ```bash
 user@server git merge macos
@@ -312,7 +328,8 @@ Auto-merging src/ProjectLauncher/LaunchForm.cs
 CONFLICT (content): Merge conflict in src/ProjectLauncher/LaunchForm.cs
 Automatic merge failed; fix conflicts and then commit the result.
 ```
---------------
+
+#Resolving merge conflicts
 
 ```bash
 user@server git status
@@ -338,9 +355,8 @@ using System.Linux.Forms;
 using EnvDTE;
 ```
 
+----------
 
-#Feature branch workflows
-How it all can work together
 ![](images/atlassian-gitflow.svg)
 
 ----------
@@ -382,6 +398,19 @@ User2 forks a project repository to create their project fork.
 * Pushes changes to *origin*
 * Merges to *upstream* or creates a Pull Request.
 
+##Remotes and forks: Update your fork
+
+There has been changes to the upstream master. How to bring those changes into your fork’s master?
+
+```bash
+git remote
+git remote add upstream git@github.com:user/project.git
+git remote update --prune
+git checkout master
+git pull upstream master
+git push # aka git push origin master
+```
+Now make your new feature branch or rebase your existing branches
 
 #Pull requests
 
@@ -393,37 +422,177 @@ Create a pull request when you have new commits for a project in a fork and/or b
 
 *”I’ve made some changes! Will you accept them?”*
 
-# git rebase
+# Rebasing
 
-A merge creates a single commit with two parents, leaving a non-linear history, a rebase replays the commits from the current branch onto another, leaving a linear history.
+##Intro
+A merge creates a single commit with two parents, this creates a non-linear history.
 
-The “base” commit on the branch is changed hence “rebase.”
+A rebase “replays” the commits from the current branch onto another, leaving a linear history.
 
-##Squashing commits with rebase -i
+The goal is to create a cleaner history that doesn’t include many resolved merge conflicts or dozens of tiny commits.
 
+##Squashing commits - 1
 
-##Editing commits with rebase -i
-
-
-#Update your fork
-
-Never make commits on existing branches
+You push early and often, but that often results in a cluttered history.
 ```bash
-git remote
-git remote add upstream git@github.com:user/project.git
-git remote update --prune
-git checkout master
-git pull upstream master
-git push # aka git push origin master
+user@server ~/development/project $ git log --oneline
+bf7d984 Minor readme edit
+7fc1195 Readme details
+53ddfc4 Minor edit
+63df92b Minor edit
+7714f34 New feature
+286e2e4 Initial
 ```
-Now make your new feature branch or rebase your existing branches
 
-#Rewriting local history
-##git commit --amend
-Making minor updates to an existing commit
-Never to be used on a master branch
+Rebase allows you to “squash” those extra commits together.
 
-##Force push (on your own feature branches)
+##Squashing commits - 2
+
+```bash
+user@server ~/development/project $ git rebase -i 286e2e4
+```
+Which opens your default text editor
+```
+
+pick 7714f34 New feature
+pick 63df92b Minor edit
+pick 53ddfc4 Minor edit
+pick 7fc1195 Readme details
+pick bf7d984 Minor readme edit
+
+# Rebase 286e2e4..bf7d984 onto 286e2e4
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like "squash", but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+#
+# These lines can be re-ordered; they are executed from top to bottom.
+#
+# If you remove a line here THAT COMMIT WILL BE LOST.
+#
+# However, if you remove everything, the rebase will be aborted.
+#
+# Note that empty commits are commented out
+```
+
+##Squashing commits - 3
+
+Change *pick* to *squash*
+```
+pick 7714f34 New feature
+squash 63df92b Minor edit
+squash 53ddfc4 Minor edit
+pick 7fc1195 Readme details
+squash bf7d984 Minor readme edit
+```
+Save and exit. 
+
+##Squashing commits - 4
+
+git opens the text editor again allowing you amend the commit message of the now combined commits.
+
+```
+# This is a combination of 3 commits.
+# The first commit's message is:
+New feature
+
+# This is the 2nd commit message:
+
+Minor edit
+
+# This is the 3rd commit message:
+
+Minor edit
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# rebase in progress; onto 286e2e4
+# You are currently editing a commit while rebasing branch 'master' on '286e2e4$
+#
+# Changes to be committed:
+#       modified:   site.css
+#
+```
+
+##Squashing commits - 5
+The result: a clean git log ready to merge or be put in a pull request
+```bash
+user@server ~/development/project $ git log --oneline
+bf7d984 Minor readme edit
+7fc1195 Readme details
+53ddfc4 Minor edit
+63df92b Minor edit
+7714f34 New feature
+286e2e4 Initial
+user@server ~/development/project $ git rebase -i 286e2e4
+[detached HEAD 859d12b] New feature
+ 1 file changed, 4 insertions(+)
+[detached HEAD d714f67] Readme details
+ 1 file changed, 3 insertions(+)
+Successfully rebased and updated refs/heads/master.
+user@server ~/development/project $ git log --oneline
+d714f67 Readme details
+859d12b New feature
+286e2e4 Initial
+user@server ~/development/project $
+```
+
+##Editing commits with rebase - 1
+
+Editing commits with rebase is functions like amending a commit, but allows you to work with the entire history. 
+
+```bash
+user@server ~/development/project $ git rebase -i 286e2e4
+```
+
+Your text editor:
+```
+edit 859d12b New feature
+pick d714f67 Readme details
+
+# Rebase 286e2e4..d714f67 onto 286e2e4
+#
+# Commands:
+#  p, pick = use commit
+#  r, reword = use commit, but edit the commit message
+#  e, edit = use commit, but stop for amending
+#  s, squash = use commit, but meld into previous commit
+#  f, fixup = like "squash", but discard this commit's log message
+#  x, exec = run command (the rest of the line) using shell
+```
+
+##Editing commits with rebase - 2
+
+The result of a rebase to simply edit a commit message
+```
+user@server ~/development/project $ git log --oneline
+d714f67 Readme details
+859d12b New feature
+286e2e4 Initial
+user@server ~/development/project $ git rebase -i 286e2e4
+Stopped at 859d12bdcfc54fafcb5fbca3bb9ab0da57f4c92a... New feature
+You can amend the commit now, with
+
+    git commit --amend
+
+Once you are satisfied with your changes, run
+
+    git rebase --continue
+
+user@server ~/development/project $ git commit --amend
+[detached HEAD 0a9c2fe] New feature, more details to message
+ 1 file changed, 4 insertions(+)
+user@server ~/development/project $ git rebase --continue
+Successfully rebased and updated refs/heads/master.
+user@server ~/development/project $ git log --oneline
+7d328c7 Readme details
+0a9c2fe New feature, more details to message
+286e2e4 Initial
+```
 
 #Useful commit messages
 
@@ -461,7 +630,7 @@ Plus: Pull Requests, Useful commit messages
 * history rewriting for removing passwords and extraneous binary files.
 * repository hooks
 * Pull Requests are coming to Drupal.org: https://www.youtube.com/watch?v=37zyV2mqDjU
-* https://www.atlassian.com/git/tutorials/setting-up-a-repository
+* https://www.atlassian.com/git/tutorials/advanced-overview/
 
 #EOF
 
