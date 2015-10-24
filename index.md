@@ -340,7 +340,8 @@ using EnvDTE;
 
 
 #Feature branch workflows
-Summary of how all of the above commands work together
+How it all can work together
+![](images/atlassian-gitflow.svg)
 
 ----------
 
