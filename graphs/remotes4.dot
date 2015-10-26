@@ -1,5 +1,5 @@
 digraph git {
-  rankdir=LR
+	rankdir=LR
 	graph [fontname="helvetica, sans"];
 	node [fontname="helvetica, sans", shape=square, color=darkolivegreen4, fillcolor=darkolivegreen2, style=filled];
 	edge [fontname="helvetica, sans"];
@@ -11,12 +11,12 @@ digraph git {
 		color=grey50
 		fillcolor=grey80
 
-    {
-      rank=same
-      r0 [label="upstream remote\n(user1/master)"]
-      r1 [label="origin remote\n(user2/master)"]
-    }
-  }
+		{
+			rank=same
+			r0 [label="upstream remote\n(user1/master)"]
+			r1 [label="origin remote\n(user2/master)"]
+		}
+	}
 	subgraph cluster_local2 {
 		label = "user2 local"
 		style=filled
@@ -25,10 +25,8 @@ digraph git {
 
 		r3 [label="master"]
 	}
-  r3 -> r1
+	r3 -> r1
 
-  r0 -> r3
-  r1 -> r0
-
-
+	r0 -> r3
+	r1 -> r0
 }

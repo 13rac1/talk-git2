@@ -26,7 +26,7 @@ digraph git {
 		a3 [label="d42ce"]
 		a4 [label="9ffb7"]
 		a5 [label="e4930"]
-    a1 -> m3
-    a4 -> m6
+		a1 -> m3
+		a4 -> m6
 	}
 }
