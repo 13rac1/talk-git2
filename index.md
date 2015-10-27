@@ -1,6 +1,8 @@
 #git, the next level
 http://eosrei.github.io/talk-git2
 
+Press *spacebar* to continue.
+
 #About Us
 Brad Erickson (eosrei) & Mark Ferree (mrf)
 
