@@ -297,8 +297,10 @@ Branches can be used for new features, temporary tests or quick backups.
 user@server ~/development/project $ git commit -am "Updating readme"
 [1-readme-details 5849d9b] Updating readme
  1 file changed, 1 insertion(+), 1 deletion(-)
+
 user@server ~/development/project $ git checkout master
 Switched to branch 'master'
+
 user@server ~/development/project $ git branch -d 1-readme-details
 error: The branch '1-readme-details' is not fully merged.
 If you are sure you want to delete it, run 'git branch -D 1-readme-details'.
@@ -313,6 +315,24 @@ A merge creates a new commit that incorporates changes from other commits. The t
 ```
 git checkout master
 git merge develop
+```
+
+#Finding branches to clean up.
+
+Git keeps track of what is merged and what isn't.
+```bash
+user@server git branch -r --merged
+  origin/HEAD -> origin/master
+  origin/master
+
+user@server git branch -r --no-merged
+  origin/badcamp2015
+  origin/gh-pages
+
+user@server git branch --merged
+* master
+
+user@server git branch --no-merged
 ```
 
 #Creating merge conflicts
