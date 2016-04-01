@@ -380,10 +380,6 @@ using EnvDTE;
 
 ----------
 
-![](images/atlassian-gitflow.svg)
-
-----------
-
 ##Remotes and forks: Origin Remote
 The source repository is called your *origin* remote.
 
