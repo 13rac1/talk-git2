@@ -10,9 +10,8 @@ Brad Erickson (eosrei) & Mark Ferree (mrf)
 
 ##Git Commands
 
-*Working knowledge of Git from the command line.*
-
-You must know the following Git commands and their usage:
+*Working knowledge of Git from the command line.* You must know
+the following Git commands and their usage:
 
 * clone
 * checkout
@@ -72,9 +71,9 @@ index d3d57ae..f1ef55c 100644
 --- a/daemon.go
 +++ b/daemon.go
 @@ -179,12 +180,19 @@ func (cli *DaemonCli) CmdDaemon(args ...string) error {
- 
+
   logrus.SetFormatter(&logrus.TextFormatter{TimestampFormat: timeutils.RFC3339NanoFixed})
- 
+
 +  if len(cli.LogConfig.Config) > 0 {
 +    if err := logger.ValidateLogOpts(cli.LogConfig.Type, cli.LogConfig.Config); err != nil {
 +      logrus.Fatalf("Failed to set log opts: %v", err)
@@ -199,7 +198,7 @@ git commit --amend
 Making minor updates to an existing commit
 NEVER to be used on a master branch
 
-##Useful commands: Force push 
+##Useful commands: Force push
 ```bash
 git push --force
 ```
@@ -220,7 +219,7 @@ Two users working on one branch.
 ##Failed to push some refs
 
 The error we’ve all seen working like this.
-```bash
+```
 To https://server.com/user/example.git
 ! [rejected]        master -> master (non-fast-forward)
 error: failed to push some refs to 'git@server.com/user/example.git'
@@ -264,13 +263,9 @@ Master is preserved for hotfixes
 
 ##The Best Solution
 
-Two users work in their own branches, the second branch is rebased, then merged to master when features are complete.
+Two users work in their own branches, the second branch is rebased, then merged to master when features are complete. *This is the Github/Bitbucket/etc Pull Request workflow.*
 
 ![](images/graphs/correct-with-rebase.png)
-
-*This is the Github/Bitbucket/etc Pull Request workflow.*
-
-*It is coming soon to Drupal.org.*
 
 #Creating branches
 
@@ -508,7 +503,7 @@ squash 53ddfc4 Minor edit
 pick 7fc1195 Readme details
 squash bf7d984 Minor readme edit
 ```
-Save and exit. 
+Save and exit.
 
 ##Squashing commits - 4
 
@@ -562,7 +557,7 @@ user@server ~/development/project $
 
 ##Editing commits with rebase - 1
 
-Editing commits with rebase is functions like amending a commit, but allows you to work with the entire history. 
+Editing commits with rebase is functions like amending a commit, but allows you to work with the entire history.
 
 ```bash
 user@server ~/development/project $ git rebase -i 286e2e4
