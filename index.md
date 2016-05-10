@@ -6,12 +6,17 @@ Press *spacebar* to continue.
 #About Us
 Brad Erickson (eosrei) & Mark Ferree (mrf)
 
+#What is git?
+
+A version-control system created in 2005 by Linus Torvalds for Linux kernel
+development when no existing options provided the required features.
+
 #Prerequisites
 
 ##Git Commands
 
 *Working knowledge of Git from the command line.* You must know
-the following Git commands and their usage:
+the following commands and their usage:
 
 * clone
 * checkout
@@ -20,23 +25,13 @@ the following Git commands and their usage:
 * push
 * pull
 
-##VCS Glossary
+##Glossary
 
-* VCS - Version Control System
+* VCS - Version-Control System
 * commit
 * repo / repository
 * tag
 * branch
-
-#Why is Git better than other VCSs?
-
-Benefits to Git:
-
-* Distributed
-    * Local copy of files and complete history
-    * Contribute from anywhere even without Internet
-* Faster than SVN & CVS
-* Integrated with all the tools
 
 ----------
 
@@ -312,7 +307,7 @@ git checkout master
 git merge develop
 ```
 
-#Finding branches to clean up.
+#Finding branches to clean up
 
 Git keeps track of what is merged and what isn't.
 ```bash
