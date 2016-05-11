@@ -11,6 +11,10 @@ Brad Erickson (eosrei) & Mark Ferree (mrf)
 A version-control system created in 2005 by Linus Torvalds for Linux kernel
 development when no existing options provided the required features.
 
+When asked why he called the new software, "git", British slang meaning "a
+rotten person", he said. "I'm an egotistical bastard, so I name all my projects
+after myself. First Linux, now git."
+
 #Prerequisites
 
 ##Git Commands
@@ -185,7 +189,6 @@ stash@{2}: WIP on master: 21d80a5 added number to log
 user@server $ git stash apply
 ```
 
-
 ##Useful commands: Amend
 ```bash
 git commit --amend
@@ -200,6 +203,22 @@ git push --force
 ONLY USE ON YOUR OWN FEATURE BRANCHES
 
 Assumes your local is correct in all cases and overwrites accordingly.
+
+##Useful commands: Bisect
+```bash
+git bisect start
+git bisect good 362c
+git bisect bad 90d6
+```
+
+Do an optimized search through the commit history to find the exact commit
+where a bug was introduced.
+
+Reference: http://webchick.net/node/99
+
+#User Story Time
+
+Using git IRL
 
 ----------
 
@@ -316,8 +335,8 @@ user@server git branch -r --merged
   origin/master
 
 user@server git branch -r --no-merged
-  origin/badcamp2015
-  origin/gh-pages
+  origin/20-news-section
+  origin/23-user-login
 
 user@server git branch --merged
 * master
@@ -405,7 +424,7 @@ User2 forks a project repository to create their project fork.
 
 * Pull changes from *upstream* into *local/master*
 * Pushes changes to *origin*
-* Merges to *upstream* or creates a Pull Request.
+* Merges to *upstream* or create a Pull Request.
 
 ##Remotes and forks: Update your fork
 
@@ -552,7 +571,8 @@ user@server ~/development/project $
 
 ##Editing commits with rebase - 1
 
-Editing commits with rebase is functions like amending a commit, but allows you to work with the entire history.
+Editing commits with rebase is functions like amending a commit, but allows you
+to work with the entire history.
 
 ```bash
 user@server ~/development/project $ git rebase -i 286e2e4
@@ -611,8 +631,8 @@ It is not descriptive or useful.
 ##Yes, this.
 
 The git history explains how the project evolved and why decisions were made.
-
-Git commit messages, just like code comments, should succinctly explain “what”, but explain *why* in detail.
+Git commit messages, just like code comments, should succinctly explain “what”,
+but explain *why* in detail.
 
 ```
 tag: Short explanation of the commit
@@ -626,7 +646,7 @@ Reference: https://wiki.gnome.org/Git/CommitMessages
 
 #Summary
 
-New git commands: tag, diff, log, whatchanged, blame, remote, stash, rebase
+New git commands: tag, diff, log, whatchanged, blame, remote, stash, rebase, bisect
 
 Plus: Pull Requests, Useful commit messages
 
