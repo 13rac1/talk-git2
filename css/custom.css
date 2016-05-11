@@ -11,3 +11,12 @@ body .reveal .slides {
   width: 100%;
   font-size: .44em;
 }
+
+#remotes-and-forks-origin-and-upstream ul {
+  display: inline;
+}
+
+#remotes-and-forks-origin-and-upstream figure {
+  float: left;
+  width: 50%;
+}

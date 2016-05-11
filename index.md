@@ -6,10 +6,10 @@ Press *spacebar* to continue.
 #About Us
 Brad Erickson (eosrei) & Mark Ferree (mrf)
 
-#What is git?
+#git History
 
-A version-control system created in 2005 by Linus Torvalds for Linux kernel
-development when no existing options provided the required features.
+A distributed version-control system created in 2005 by Linus Torvalds for
+Linux kernel development when no existing options provided the required features.
 
 When asked why he called the new software, "git", British slang meaning "a
 rotten person", he said. "I'm an egotistical bastard, so I name all my projects
@@ -170,9 +170,8 @@ f434037c (Nathan Haug         2011-10-30 21:05:57 -0700  8)  * See COPYRIGHT.txt
 
 ##Useful commands: Git Stash
 
-Stores your current changes removing them from working directory.
-
-Can pull back in stashes, and each stash is stored for later recall.
+Store your changes and remove them from the working directory. A stash can
+re-applied later as needed.
 
 ```bash
 user@server $ git stash
@@ -193,26 +192,40 @@ user@server $ git stash apply
 ```bash
 git commit --amend
 ```
-Making minor updates to an existing commit
-NEVER to be used on a master branch
+Replace the current commit. Often used for minor updates.
+
+Careful! Don't amend published commits, anything someone else may have pulled.
 
 ##Useful commands: Force push
 ```bash
 git push --force
 ```
-ONLY USE ON YOUR OWN FEATURE BRANCHES
 
-Assumes your local is correct in all cases and overwrites accordingly.
+Overwrites the remote branch history with your local branch history.
+
+Careful! You can delete your remote branch history with this command or
+even the entire repository.
 
 ##Useful commands: Bisect
+
+Bisect: Divide into two parts
+
 ```bash
 git bisect start
-git bisect good 362c
 git bisect bad 90d6
+git bisect good 362c
 ```
 
-Do an optimized search through the commit history to find the exact commit
-where a bug was introduced.
+Run through the commit history to find where a change was introduced.
+An optimized binary search is more efficient than checking out each commit in
+order:
+```bash
+git checkout 90d6
+git checkout 4j3h
+git checkout 362c
+git checkout 53j2
+git checkout 5484
+```
 
 Reference: http://webchick.net/node/99
 
@@ -258,8 +271,8 @@ user@server $ git push
 ##Reasons to avoid
 
 * Creates an extra git merge commit
-* Risk of merge conflicts
-* A messy git history = harder to track down problems
+* Introduces greater risk of merge conflicts
+* A messy git history makes problems more difficult to track down.
 
 ----------
 
@@ -277,7 +290,7 @@ Master is preserved for hotfixes
 
 ##The Best Solution
 
-Two users work in their own branches, the second branch is rebased, then merged to master when features are complete. *This is the Github/Bitbucket/etc Pull Request workflow.*
+Two users work in their own branches, the second branch is rebased, then merged to master when features are complete. *This is the Github/Bitbucket Pull Request workflow.*
 
 ![](images/graphs/correct-with-rebase.png)
 
@@ -320,7 +333,7 @@ Delete local and remote branches when you are done with them.
 
 #Merging branches
 
-A merge creates a new commit that incorporates changes from other commits. The two different sources commit histories are combined into a single history with each commit holding its place in time.
+A merge creates a new commit to incorporate changes from other branches. The two branches commit histories are combined into a single history with each commit holding its place in time.
 ```
 git checkout master
 git merge develop
@@ -330,24 +343,28 @@ git merge develop
 
 Git keeps track of what is merged and what isn't.
 ```bash
-user@server git branch -r --merged
+user@server ~/development/project $ git branch -r --merged
   origin/HEAD -> origin/master
   origin/master
 
-user@server git branch -r --no-merged
+user@server ~/development/project $ git branch -r --no-merged
   origin/20-news-section
   origin/23-user-login
 
-user@server git branch --merged
+user@server ~/development/project $ git branch --merged
 * master
 
-user@server git branch --no-merged
+user@server ~/development/project $ git branch --no-merged
 ```
 
-#Creating merge conflicts
+----------
+
+##Merge conflicts: Creating
+
+If you want them?
 
 ```bash
-user@server git merge macos
+user@server ~/development/project $ git merge macos
 Updating c1f5cc2..fc56b58
 Fast-forward
  src/ProjectLauncher/LaunchForm.cs | 2 +-
@@ -355,16 +372,16 @@ Fast-forward
 ```
 
 ```bash
-user@server git merge linux
+user@server ~/development/project $ git merge linux
 Auto-merging src/ProjectLauncher/LaunchForm.cs
 CONFLICT (content): Merge conflict in src/ProjectLauncher/LaunchForm.cs
 Automatic merge failed; fix conflicts and then commit the result.
 ```
 
-#Resolving merge conflicts
+##Merge conflicts: Resolving
 
 ```bash
-user@server git status
+user@server ~/development/project $ git status
 On branch master
 You have unmerged paths.
   (fix conflicts and run "git commit")
@@ -375,7 +392,7 @@ Unmerged paths:
         both modified:   LaunchForm.cs
 ```
 
-```bash
+```patch
 using System.Drawing;
 using System.Text;
 <<<<<<< HEAD
@@ -385,6 +402,10 @@ using System.Linux.Forms;
 >>>>>>> linux
 
 using EnvDTE;
+```
+
+```bash
+user@server ~/development/project $ git add LaunchForm.cs
 ```
 
 ----------
@@ -414,7 +435,7 @@ Two users can use the same repository as their origin remote.
 
 ##Remotes and forks: Two users, two remotes.
 
-User2 forks a project repository to create their project fork.
+User2 forks the project repository creating their own fork.
 
 ![](images/graphs/remotes3.png)
 
@@ -422,29 +443,31 @@ User2 forks a project repository to create their project fork.
 
 ![](images/graphs/remotes4.png)
 
+The world according to user2
+
 * Pull changes from *upstream* into *local/master*
 * Pushes changes to *origin*
 * Merges to *upstream* or create a Pull Request.
 
 ##Remotes and forks: Update your fork
 
-There has been changes to the upstream master. How to bring those changes into your fork’s master?
+There are changes to the upstream master. How do you bring those changes into your fork’s master branch?
 
 ```bash
 git remote
 git remote add upstream git@github.com:user/project.git
-git remote update --prune
+git remote update --prune # Update your remote repo copies and remove deleted branches
 git checkout master
 git pull upstream master
 git push # aka git push origin master
 ```
-Now make your new feature branch or rebase your existing branches
+Now make your new feature branch or rebase your existing branches.
 
 #Pull requests
 
 A pull request is a request to pull your changes.
 
-Not a feature of Git, but of UI tools such as Github, Bitbucket, and soon Drupal.org.
+Not a feature of Git, but of UI tools such as Github, Bitbucket, and Gitlab.
 
 Create a pull request when you have new commits for a project in a fork and/or branch which should be pulled into the original project.
 
@@ -453,15 +476,19 @@ Create a pull request when you have new commits for a project in a fork and/or b
 ----------
 
 ##Rebase
-A merge creates a single commit with two parents, this creates a non-linear history.
 
-A rebase “replays” the commits from the current branch onto another, leaving a linear history.
+"REset your git branch BASE commit"
 
-The goal is to create a cleaner history that doesn’t include many resolved merge conflicts or dozens of tiny commits.
+A merge creates a single commit with two parents, creating a non-linear history.
+
+A rebase “replays” the commits from one branch onto another, creating a linear history. Commits for each feature stay together.
+
+The goal: Create a clean history without resolved merge conflicts or dozens of tiny commits.
+
 
 ##Squashing commits - 1
 
-You push early and often, but that often results in a cluttered history.
+You push early and often, but that results in a cluttered history.
 ```bash
 user@server ~/development/project $ git log --oneline
 bf7d984 Minor readme edit
@@ -481,7 +508,6 @@ user@server ~/development/project $ git rebase -i 286e2e4
 ```
 Which opens your default text editor
 ```
-
 pick 7714f34 New feature
 pick 63df92b Minor edit
 pick 53ddfc4 Minor edit
@@ -499,11 +525,8 @@ pick bf7d984 Minor readme edit
 #  x, exec = run command (the rest of the line) using shell
 #
 # These lines can be re-ordered; they are executed from top to bottom.
-#
 # If you remove a line here THAT COMMIT WILL BE LOST.
-#
 # However, if you remove everything, the rebase will be aborted.
-#
 # Note that empty commits are commented out
 ```
 
@@ -547,7 +570,7 @@ Minor edit
 ```
 
 ##Squashing commits - 5
-The result: a clean git log ready to merge or be put in a pull request
+The result: a clean git history ready to merge or used in a pull request.
 ```bash
 user@server ~/development/project $ git log --oneline
 bf7d984 Minor readme edit
