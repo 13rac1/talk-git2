@@ -488,6 +488,22 @@ A rebase “replays” the commits from one branch onto another, creating a line
 
 The goal: Create a clean history without resolved merge conflicts or dozens of tiny commits.
 
+##Rebasing a feature branch - 1
+
+Remember this?
+![](images/graphs/correct-with-rebase.png)
+
+##Rebasing a feature branch - 2
+
+Rebase to master, then merge to master.
+
+```bash
+git checkout FeatureB
+git rebase master
+git push -f # Force update your remote branch
+git checkout master
+git merge master # Or create Pull Request
+```
 
 ##Squashing commits - 1
 
