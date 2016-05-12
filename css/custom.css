@@ -12,6 +12,10 @@ body .reveal .slides {
   font-size: .44em;
 }
 
+.reveal pre code {
+  background: #000;
+}
+
 #remotes-and-forks-origin-and-upstream ul {
   display: inline;
 }
