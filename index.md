@@ -1,5 +1,5 @@
 #git, the next level
-Follow Along: http://eosrei.github.io/talk-git2
+Follow along: http://eosrei.github.io/talk-git2
 
 Source: https://github.com/eosrei/talk-git2
 
@@ -49,11 +49,11 @@ Like most VCSs, Git has the ability to tag specific points in history as being i
 Tags are generally used to denote a version release of the codebase or repository.
 
 ```bash
-user@server ~/development/project $ git tag
-user@server ~/development/project $ git tag v1.0
-user@server ~/development/project $ git tag
+user@server ~/example $ git tag
+user@server ~/example $ git tag v1.0
+user@server ~/example $ git tag
 v1.0
-user@server ~/development/project $ git show v1.0
+user@server ~/example $ git show v1.0
 commit 1da177e4c3f41524e886b7f1b8a0c1fc7321cac2
 Author: Example <user@example.com>
 Date:   Tue Jan 19 03:14:08 2038 0000
@@ -85,9 +85,6 @@ index d3d57ae..f1ef55c 100644
   var pfile *pidfile.PIDFile
   if cli.Pidfile != "" {
     pf, err := pidfile.New(cli.Pidfile)
-    if err != nil {
-      logrus.Fatalf("Error starting daemon: %v", err)
-    }
 ```
 
 ##Useful commands: Viewing changes in commit history
@@ -163,12 +160,6 @@ f434037c (Nathan Haug         2011-10-30 21:05:57 -0700  8)  * See COPYRIGHT.txt
 8a567823 (Alex Pott           2014-04-25 20:13:44 +0100 13)
 95fe74d5 (catch               2015-03-11 08:31:22 +0000 14) $autoloader = require_once 'autoload.php';
 5e58da00 (Nathaniel Catchpole 2014-06-26 11:47:01 +0100 15)
-90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 16) $kernel = new DrupalKernel('prod', $autoloader);
-1251cc35 (webchick            2014-06-18 00:07:06 -0700 17)
-90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 18) $request = Request::createFromGlobals();
-90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 19) $response = $kernel->handle($request);
-90d6fb15 (Alex Pott           2015-06-03 18:06:46 +0100 20) $response->send();
-
 ```
 
 ##Useful commands: Git Stash
@@ -177,23 +168,23 @@ Store your changes and remove them from the working directory. A stash can
 re-applied later as needed.
 
 ```bash
-user@server $ git stash
+user@server ~/example $ git stash
 ```
 
 ```bash
-user@server $ git stash list
+user@server ~/example $ git stash list
 stash@{0}: WIP on master: 049d078 added the index file
 stash@{1}: WIP on master: c264051 Revert "added file_size"
 stash@{2}: WIP on master: 21d80a5 added number to log
 ```
 
 ```bash
-user@server $ git stash apply
+user@server ~/example $ git stash apply
 ```
 
 ##Useful commands: Amend
 ```bash
-git commit --amend
+user@server ~/example $ git commit --amend
 ```
 Replace the current commit. Often used for minor updates.
 
@@ -201,7 +192,7 @@ Careful! Don't amend published commits, anything someone else may have pulled.
 
 ##Useful commands: Force push
 ```bash
-git push --force
+user@server ~/example $ git push --force
 ```
 
 Overwrites the remote branch history with your local branch history.
@@ -214,20 +205,20 @@ even the entire repository.
 Bisect: Divide into two parts
 
 ```bash
-git bisect start
-git bisect bad 90d6
-git bisect good 362c
+user@server ~/example $ git bisect start
+user@server ~/example $ git bisect bad 90d6
+user@server ~/example $ git bisect good 362c
 ```
 
 Run through the commit history to find where a change was introduced.
 An optimized binary search is more efficient than checking out each commit in
 order:
 ```bash
-git checkout 90d6
-git checkout 4j3h
-git checkout 362c
-git checkout 53j2
-git checkout 5484
+user@server ~/example $ git checkout 90d6
+user@server ~/example $ git checkout 4j3h
+user@server ~/example $ git checkout 362c
+user@server ~/example $ git checkout 53j2
+user@server ~/example $ git checkout 5484
 ```
 
 Reference: http://webchick.net/node/99
@@ -266,8 +257,8 @@ Git won't be able to push your changes if another user has pushed to the same br
 ##Common solution
 
 ```bash
-user@server $ git pull # Equal to fetch and merge.
-user@server $ git push
+user@server ~/example $ git pull # Equal to fetch and merge.
+user@server ~/example $ git push
 ```
 ![](images/graphs/incorrect-with-conflict2.png)
 
@@ -306,11 +297,13 @@ Ideally name branches descriptively, such as:
 *issue#-short_description*
 
 ```bash
-user@server ~/development/project $ git branch #List local branches
+user@server ~/example $ git branch #List local branches
 * master
-user@server ~/development/project $ git checkout -b 1-readme-details #Create a new branch
+
+user@server ~/example $ git checkout -b 1-readme-details #Create a new branch
 Switched to a new branch '1-readme-details'
-user@server ~/development/project $ git branch #List local branches
+
+user@server ~/example $ git branch #List local branches
   master
 * 1-readme-details
 ```
@@ -319,17 +312,17 @@ user@server ~/development/project $ git branch #List local branches
 
 Branches can be used for new features, temporary tests or quick backups.
 ```bash
-user@server ~/development/project $ git commit -am "Updating readme"
+user@server ~/example $ git commit -am "Updating readme"
 [1-readme-details 5849d9b] Updating readme
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-user@server ~/development/project $ git checkout master
+user@server ~/example $ git checkout master
 Switched to branch 'master'
 
-user@server ~/development/project $ git branch -d 1-readme-details
+user@server ~/example $ git branch -d 1-readme-details
 error: The branch '1-readme-details' is not fully merged.
 If you are sure you want to delete it, run 'git branch -D 1-readme-details'.
-user@server ~/development/project $ git branch -D 1-readme-details
+user@server ~/example $ git branch -D 1-readme-details
 Deleted branch 1-readme-details (was 5849d9b).
 ```
 Delete local and remote branches when you are done with them.
@@ -338,26 +331,26 @@ Delete local and remote branches when you are done with them.
 
 A merge creates a new commit to incorporate changes from other branches. The two branches commit histories are combined into a single history with each commit holding its place in time.
 ```
-git checkout master
-git merge develop
+user@server ~/example $ git checkout master
+user@server ~/example $ git merge develop
 ```
 
 #Finding branches to clean up
 
 Git keeps track of what is merged and what isn't.
 ```bash
-user@server ~/development/project $ git branch -r --merged
+user@server ~/example $ git branch -r --merged
   origin/HEAD -> origin/master
   origin/master
 
-user@server ~/development/project $ git branch -r --no-merged
+user@server ~/example $ git branch -r --no-merged
   origin/20-news-section
   origin/23-user-login
 
-user@server ~/development/project $ git branch --merged
+user@server ~/example $ git branch --merged
 * master
 
-user@server ~/development/project $ git branch --no-merged
+user@server ~/example $ git branch --no-merged
 ```
 
 ----------
@@ -367,7 +360,7 @@ user@server ~/development/project $ git branch --no-merged
 If you want them?
 
 ```bash
-user@server ~/development/project $ git merge macos
+user@server ~/example $ git merge macos
 Updating c1f5cc2..fc56b58
 Fast-forward
  src/ProjectLauncher/LaunchForm.cs | 2 +-
@@ -375,7 +368,7 @@ Fast-forward
 ```
 
 ```bash
-user@server ~/development/project $ git merge linux
+user@server ~/example $ git merge linux
 Auto-merging src/ProjectLauncher/LaunchForm.cs
 CONFLICT (content): Merge conflict in src/ProjectLauncher/LaunchForm.cs
 Automatic merge failed; fix conflicts and then commit the result.
@@ -384,7 +377,7 @@ Automatic merge failed; fix conflicts and then commit the result.
 ##Merge conflicts: Resolving
 
 ```bash
-user@server ~/development/project $ git status
+user@server ~/example $ git status
 On branch master
 You have unmerged paths.
   (fix conflicts and run "git commit")
@@ -408,7 +401,7 @@ using EnvDTE;
 ```
 
 ```bash
-user@server ~/development/project $ git add LaunchForm.cs
+user@server ~/example $ git add LaunchForm.cs
 ```
 
 ----------
@@ -417,13 +410,14 @@ user@server ~/development/project $ git add LaunchForm.cs
 The source repository is called your *origin* remote.
 
 ```bash
-user@server ~/development/project $ git clone https://github.com/torvalds/linux.git
-user@server ~/development/project $ git remote
+user@server ~ $ git clone https://github.com/user/example.git
+user@server ~ $ cd example
+user@server ~/example $ git remote
 origin
 ```
 
 ```bash
-user@server ~/development/project $ git status
+user@server ~/example $ git status
 On branch master
 Your branch is up-to-date with 'origin/master'.
 ```
@@ -459,7 +453,7 @@ There are changes to the upstream master. How do you bring those changes into yo
 ```bash
 git remote
 git remote add upstream git@github.com:user/project.git
-git remote update --prune # Update your remote repo copies and remove deleted branches
+git remote update --prune # Update remote repos copies, remove deleted branches
 git checkout master
 git pull upstream master
 git push # aka git push origin master
@@ -509,7 +503,7 @@ git merge master # Or create Pull Request
 
 You push early and often, but that results in a cluttered history.
 ```bash
-user@server ~/development/project $ git log --oneline
+user@server ~/example $ git log --oneline
 bf7d984 Minor readme edit
 7fc1195 Readme details
 53ddfc4 Minor edit
@@ -523,7 +517,7 @@ Rebase allows you to “squash” those extra commits together.
 ##Squashing commits - 2
 
 ```bash
-user@server ~/development/project $ git rebase -i 286e2e4
+user@server ~/example $ git rebase -i 286e2e4
 ```
 Which opens your default text editor
 ```
@@ -532,9 +526,7 @@ pick 63df92b Minor edit
 pick 53ddfc4 Minor edit
 pick 7fc1195 Readme details
 pick bf7d984 Minor readme edit
-
 # Rebase 286e2e4..bf7d984 onto 286e2e4
-#
 # Commands:
 #  p, pick = use commit
 #  r, reword = use commit, but edit the commit message
@@ -542,7 +534,6 @@ pick bf7d984 Minor readme edit
 #  s, squash = use commit, but meld into previous commit
 #  f, fixup = like "squash", but discard this commit's log message
 #  x, exec = run command (the rest of the line) using shell
-#
 # These lines can be re-ordered; they are executed from top to bottom.
 # If you remove a line here THAT COMMIT WILL BE LOST.
 # However, if you remove everything, the rebase will be aborted.
@@ -569,15 +560,10 @@ git opens the text editor again allowing you amend the commit message of the now
 # This is a combination of 3 commits.
 # The first commit's message is:
 New feature
-
 # This is the 2nd commit message:
-
 Minor edit
-
 # This is the 3rd commit message:
-
 Minor edit
-
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
 # rebase in progress; onto 286e2e4
@@ -591,24 +577,23 @@ Minor edit
 ##Squashing commits - 5
 The result: a clean git history ready to merge or used in a pull request.
 ```bash
-user@server ~/development/project $ git log --oneline
+user@server ~/example $ git log --oneline
 bf7d984 Minor readme edit
 7fc1195 Readme details
 53ddfc4 Minor edit
 63df92b Minor edit
 7714f34 New feature
 286e2e4 Initial
-user@server ~/development/project $ git rebase -i 286e2e4
+user@server ~/example $ git rebase -i 286e2e4444px
 [detached HEAD 859d12b] New feature
  1 file changed, 4 insertions(+)
 [detached HEAD d714f67] Readme details
  1 file changed, 3 insertions(+)
 Successfully rebased and updated refs/heads/master.
-user@server ~/development/project $ git log --oneline
+user@server ~/example $ git log --oneline
 d714f67 Readme details
 859d12b New feature
 286e2e4 Initial
-user@server ~/development/project $
 ```
 
 ##Editing commits with rebase - 1
@@ -617,7 +602,7 @@ Editing commits with rebase is functions like amending a commit, but allows you
 to work with the entire history.
 
 ```bash
-user@server ~/development/project $ git rebase -i 286e2e4
+user@server ~/example $ git rebase -i 286e2e4
 ```
 
 Your text editor:
@@ -640,22 +625,22 @@ pick d714f67 Readme details
 
 The result of a rebase to simply edit a commit message
 ```
-user@server ~/development/project $ git log --oneline
+user@server ~/example $ git log --oneline
 d714f67 Readme details
 859d12b New feature
 286e2e4 Initial
-user@server ~/development/project $ git rebase -i 286e2e4
+user@server ~/example $ git rebase -i 286e2e4
 Stopped at 859d12bdcfc54fafcb5fbca3bb9ab0da57f4c92a... New feature
 You can amend the commit now, with
     git commit --amend
 Once you are satisfied with your changes, run
     git rebase --continue
-user@server ~/development/project $ git commit --amend
+user@server ~/example $ git commit --amend
 [detached HEAD 0a9c2fe] New feature, more details to message
  1 file changed, 4 insertions(+)
-user@server ~/development/project $ git rebase --continue
+user@server ~/example $ git rebase --continue
 Successfully rebased and updated refs/heads/master.
-user@server ~/development/project $ git log --oneline
+user@server ~/example $ git log --oneline
 7d328c7 Readme details
 0a9c2fe New feature, more details to message
 286e2e4 Initial

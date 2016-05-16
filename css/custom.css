@@ -9,11 +9,12 @@ body .reveal .slides {
 
 .reveal pre {
   width: 100%;
-  font-size: .44em;
+  font-size: .55em;
 }
 
 .reveal pre code {
   background: #000;
+  max-height: 23em;
 }
 
 #remotes-and-forks-origin-and-upstream ul {
