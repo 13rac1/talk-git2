@@ -1,4 +1,4 @@
-#git, the next level
+#Next Level git
 Follow Along: http://eosrei.github.io/talk-git2
 
 Source: https://github.com/eosrei/talk-git2
